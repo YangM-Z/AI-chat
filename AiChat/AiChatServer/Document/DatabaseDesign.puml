@@ -1,0 +1,42 @@
+@startuml
+
+entity "users" {
+  CHAR(36) id
+  VARCHAR(50) username
+  VARCHAR(255) password
+  ENUM('admin', 'user') role
+  TIMESTAMP created_at
+  BOOLEAN delete_flag
+}
+
+entity "sessions" {
+  INT id
+  CHAR(36) user_id
+  VARCHAR(100) session_name
+  TIMESTAMP created_at
+  TIMESTAMP last_active
+}
+
+entity "messages" {
+  INT id
+  INT session_id
+  VARCHAR(50) sender
+  TEXT message_text
+  TIMESTAMP created_at
+}
+
+entity "user_statistics" {
+  INT id
+  CHAR(36) user_id
+  INT total_messages
+  INT user_limit
+  TIMESTAMP last_active
+  TIMESTAMP created_at
+  BOOLEAN delete_flag
+}
+
+users ||--o{ sessions : "user_id"
+sessions ||--o{ messages : "session_id"
+users ||--o{ user_statistics : "user_id"
+
+@enduml
